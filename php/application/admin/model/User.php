@@ -31,7 +31,9 @@ class User extends Common
 	 */
     public function groups()
     {
-        return $this->belongsToMany('group', '__ADMIN_ACCESS__', 'group_id', 'user_id');
+        // return $this->belongsToMany('group', '__ADMIN_ACCESS__', 'group_id', 'user_id');
+		//7ckf belongsToMany() 的第二个参数修正
+        return $this->belongsToMany('group', 'Admin_access', 'group_id', 'user_id');
     }
 
     /**
@@ -216,7 +218,7 @@ class User extends Common
 			return false;
     	}
     	if (user_md5($password) !== $userInfo['password']) {
-			$this->error = '密码错误'.user_md5($password);
+			$this->error = '密码错误';
 			return false;
     	}
     	if ($userInfo['status'] === 0) {

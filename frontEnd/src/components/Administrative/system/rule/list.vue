@@ -1,67 +1,52 @@
 <template>
-	<div>
-		<div class="m-b-20">
-  		<router-link class="btn-link-large add-btn" to="add">
-  		  <i class="el-icon-plus"></i>&nbsp;&nbsp;添加节点
-  		</router-link>
-		</div>
-		<el-table
-		:data="tableData"
-		style="width: 100%"
-		@selection-change="selectItem">
-			<el-table-column
-			type="selection"
-			:context="_self"
-			width="50">
-			</el-table-column>
-			<el-table-column
-			prop="p_title"
-			label="节点结构"
-			width="150">
-			</el-table-column>
-			<el-table-column
-			prop="title"
-			label="显示名">
-			</el-table-column>
-  		<el-table-column
-  		prop="name"
-  		label="名称"
-  		width="200">
-  		</el-table-column>
-			<el-table-column
-			inline-template
-			label="状态"
-			width="100">
-				<div>
-					{{ row.status | status}}
-				</div>
-			</el-table-column>
-			<el-table-column
-			label="操作"
-			width="200">
-        <template scope="scope">
-          <div>
-            <span>
-              <router-link :to="{ name: 'ruleEdit', params: { id: scope.row.id }}" class="btn-link edit-btn">
-              编辑
-              </router-link>
-            </span>
-            <span>
-              <el-button
-              size="small"
-              type="danger"
-              @click="confirmDelete(scope.row)">
-              删除
-              </el-button>
-            </span>
-          </div>
-        </template>
-			</el-table-column>
-		</el-table>
-		<div class="pos-rel p-t-20">
-			<btnGroup :selectedData="multipleSelection" :type="'rules'"></btnGroup>
-		</div>
-	</div>
+    <div>
+        <div class="m-b-20">
+          <router-link class="btn-link-large add-btn" to="add">
+            <i class="el-icon-plus"></i>&nbsp;&nbsp;添加节点
+          </router-link>
+        </div>
+        <el-table
+        :data="tableData"
+        style="width: 100%"
+        @selection-change="selectItem">
+            <el-table-column type="selection" :context="_self" width="50"></el-table-column>
+            <el-table-column prop="title" label="显示名"></el-table-column>
+            <el-table-column prop="p_title" label="父节点" width="150"></el-table-column>
+            <el-table-column prop="name" label="名称" width="200"></el-table-column>
+            <el-table-column prop="level" label="类型" width="200" :filters="[{ text:'模块', value: 1}, { text:'控制器', value: 2}, { text:'操作', value: 3}]" :filter-method="filterTag">
+                <template slot-scope="scope">
+                    <el-tag size="medium">{{ level(scope.row.level) }}</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column inline-template label="状态" width="100">
+                <div>
+                    {{ row.status | status}}
+                </div>
+            </el-table-column>
+            <el-table-column label="操作" width="200">
+                <template scope="scope">
+                  <div>
+                    <span>
+                      <router-link :to="{ name: 'ruleEdit', params: { id: scope.row.id }}" class="btn-link edit-btn">
+                      编辑
+                      </router-link>
+                    </span>
+                    <span>
+                      <el-button
+                      size="small"
+                      type="danger"
+                      @click="confirmDelete(scope.row)">
+                      删除
+                      </el-button>
+                    </span>
+                  </div>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="pos-rel p-t-20">
+            <btnGroup :selectedData="multipleSelection" :type="'rules'"></btnGroup>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -98,6 +83,19 @@
         }).catch(() => {
         // handle error
         })
+      },
+      level (level) {
+        switch (level) {
+          case 1:
+            return '模块'
+          case 2:
+            return '控制器'
+          case 3:
+            return '操作'
+        }
+      },
+      filterTag (value, row) {
+        return row.level === value
       }
     },
     created() {

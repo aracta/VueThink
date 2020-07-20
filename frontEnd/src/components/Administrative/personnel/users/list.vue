@@ -21,12 +21,12 @@
 			width="50">
 			</el-table-column>
 			<el-table-column
-			prop="s_name"
-			label="所属组织架构">
+			label="用户名"
+			prop="username">
 			</el-table-column>
 			<el-table-column
-			label="用户名"
-			prop="username"
+			prop="s_name"
+			label="所属组织架构"
 			width="200">
 			</el-table-column>
 			<el-table-column
@@ -96,6 +96,7 @@
       },
       selectItem(val) {
         this.multipleSelection = val
+        this.$forceUpdate()
       },
       handleCurrentChange(page) {
         router.push({ path: this.$route.path, query: { keywords: this.keywords, page: page }})

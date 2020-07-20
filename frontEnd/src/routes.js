@@ -21,11 +21,15 @@ import usersList from './components/Administrative/personnel/users/list.vue'
 import usersAdd from './components/Administrative/personnel/users/add.vue'
 import usersEdit from './components/Administrative/personnel/users/edit.vue'
 
+// import projectsList from './components/Project/projects/list.vue'
+import projectsList from './components/Project/list.vue'
+// const projectsList = () => import('./components/Project/list.vue') // 需配合webpack实现路由懒加载
+
 /**
  * meta参数解析
  * hideLeft: 是否隐藏左侧菜单，单页菜单为true
  * module: 菜单所属模块
- * menu: 所属菜单，用于判断三级菜单是否显示高亮，如菜单列表、添加菜单、编辑菜单都是'menu'，用户列表、添加用户、编辑用户都是'user'，如此类推
+ * menu: 所属菜单，用于判断二级菜单是否显示高亮，如菜单列表、添加菜单、编辑菜单都是'menu'，用户列表、添加用户、编辑用户都是'user'，如此类推
  */
 
 const routes = [
@@ -97,6 +101,13 @@ const routes = [
       { path: 'users/list', component: usersList, name: 'usersList', meta: { hideLeft: false, module: 'Administrative', menu: 'users' }},
       { path: 'users/add', component: usersAdd, name: 'usersAdd', meta: { hideLeft: false, module: 'Administrative', menu: 'users' }},
       { path: 'users/edit/:id', component: usersEdit, name: 'usersEdit', meta: { hideLeft: false, module: 'Administrative', menu: 'users' }}
+    ]
+  },
+  {
+    path: '/home',
+    component: Home,
+    children: [
+      { path: 'projects/list', component: projectsList, name: 'projectsList', meta: { hideLeft: false, module: 'Project', menu: 'projects' }}
     ]
   }
 ]

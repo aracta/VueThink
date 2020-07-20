@@ -65,7 +65,7 @@
           ],
           LOGIN_SESSION_VALID: [
             { required: true, message: '请输入登录有效期' },
-            { type: 'number', message: '请输入数字' }
+            { type: 'number', message: '请输入数字', trigger: 'blur' }
           ]
         }
       }

@@ -18,7 +18,7 @@
           class="w-200">
         </el-input>
       </el-form-item>
-      <el-form-item label="权限分配">
+      <el-form-item label="后端权限">
         <div class="bor-gray h-400 ovf-y-auto bor-ra-5 bg-wh">
           <div v-for="item in nodes">
             <div class="bor-b-ccc bg-gra p-l-10 p-r-10">

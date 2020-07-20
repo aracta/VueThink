@@ -12,9 +12,9 @@ return [
     // 数据库名
     'database'       => 'vuethink',
     // 用户名
-    'username'       => 'root',
+    'username'       => 'vuethink',
     // 密码
-    'password'       => '123456',
+    'password'       => '3ZNPzCKPffU2nPQa',
     // 端口
     'hostport'       => '3306',
     // 连接dsn

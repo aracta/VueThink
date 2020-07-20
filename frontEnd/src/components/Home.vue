@@ -226,6 +226,7 @@
           res.selected = false
         }
       })
+      // console.log(menus, this.menu, this.module, this.menuData)
     },
     computed: {
       routerShow() {

@@ -1,17 +1,17 @@
 <template>
-	<div class="m-l-50 m-t-30 w-500">
-		<el-form ref="form" :model="form" :rules="rules" label-width="110px">
+	<div class="m-l-50 m-t-30 w-auto">
+		<el-form ref="form" :model="form" :rules="rules" label-width="120px">
 			<el-form-item label="标题" prop="title">
 				<el-input v-model.trim="form.title" class="h-40 w-200"></el-input>
 			</el-form-item>
-			<el-form-item label="绑定权限标识" prop="rule_name">
+			<el-form-item label="绑定后端权限" prop="rule_name">
 				<el-input v-model.trim="form.rule_name" class="h-40 fl w-200" :disabled="true"></el-input>
 				<el-button class="fl m-l-30" @click="openRule()">查找</el-button>
 			</el-form-item>
 			<el-form-item label="菜单类型" prop="menu_type">
 				<el-radio-group v-model="form.menu_type">
-					<el-radio label="1">普通三级菜单</el-radio>
-					<el-radio label="2">单页菜单</el-radio>
+					<el-radio label="1">一级菜单</el-radio>
+					<el-radio label="2">二级菜单</el-radio>
 					<el-radio label="3">外链</el-radio>
 				</el-radio-group>
 			</el-form-item>
@@ -20,11 +20,11 @@
 					<el-option v-for="item in options" :label="item.title" :value="item.id"></el-option>
 				</el-select>
 			</el-form-item>
-			<el-form-item label="路径">
+			<el-form-item label="路径(前端路由)">
 				<el-input v-model.trim="form.url" class="h-40 w-200"></el-input>
 			</el-form-item>
-			<el-form-item label="模块" prop="module">
-				<el-input v-model.trim="form.module" class="h-40 w-200"></el-input>
+			<el-form-item label="模块(顶部导航)" prop="module">
+				<el-input v-model.trim="form.module" class="h-40 w-200" placeholder="顶部导航"></el-input>
 			</el-form-item>
 			<el-form-item label="所属菜单">
 				<el-input v-model.trim="form.menu" class="h-40 w-200"></el-input>
@@ -65,6 +65,9 @@
         rules: {
           title: [
             { required: true, message: '请输入菜单标题' }
+          ],
+          rule_name: [
+            { required: true, message: '权限标识必须绑定' }
           ],
           menu_type: [
             { required: true, message: '请选择菜单类型' }

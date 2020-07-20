@@ -8,12 +8,15 @@
 return [
     // 定义资源路由
     '__rest__'=>[
-        'admin/rules'		   =>'admin/rules',
-        'admin/groups'		   =>'admin/groups',
-        'admin/users'		   =>'admin/users',
-        'admin/menus'		   =>'admin/menus',
-        'admin/structures'	   =>'admin/structures',
-        'admin/posts'          =>'admin/posts',
+        'admin/rules'			=>'admin/rules',
+        'admin/groups'			=>'admin/groups',
+        'admin/users'			=>'admin/users',
+        'admin/menus'			=>'admin/menus',
+        'admin/structures'		=>'admin/structures',
+        'admin/posts'			=>'admin/posts',
+		'admin/projects'		=>'admin/projects', // 7ckf
+		'admin/project_dfcltrcd'=>'admin/project_dfcltrcd',
+		'admin/project_rcd'		=>'admin/project_rcd',
     ],
 
 	// 【基础】登录
@@ -56,6 +59,8 @@ return [
 	'admin/posts/deletes' => ['admin/posts/deletes', ['method' => 'POST']],
 	// 【部门】批量启用/禁用
 	'admin/posts/enables' => ['admin/posts/enables', ['method' => 'POST']],
+	// 【项目】批量启用/禁用
+	'admin/projects/month' => ['admin/projects/index', ['method' => 'POST']],
 	
 	// MISS路由
 	'__miss__'  => 'admin/base/miss',

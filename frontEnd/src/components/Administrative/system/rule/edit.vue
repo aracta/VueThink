@@ -1,16 +1,16 @@
 <template>
-  <div class="m-l-50 m-t-30 w-500">
+  <div class="m-l-50 m-t-30 w-auto">
     <el-form ref="form" :model="form" :rules="rules" label-width="110px">
       <el-form-item label="显示名" prop="title">
         <el-input v-model.trim="form.title" class="h-40 w-200"></el-input>
       </el-form-item>
       <el-form-item label="名称" prop="name">
-        <el-input v-model.trim="form.name" class="h-40 w-200"></el-input>
+        <el-input v-model.trim="form.name" class="h-40 w-200" placeholder="驼峰法英文名"></el-input>
       </el-form-item>
       <el-form-item label="节点类型" prop="level">
         <el-radio-group v-model="form.level">
-          <el-radio label="1" disabled>项目</el-radio>
-          <el-radio label="2" disabled>模块</el-radio>
+          <el-radio label="1" disabled>模块</el-radio>
+          <el-radio label="2" disabled>控制器</el-radio>
           <el-radio label="3" disabled>操作</el-radio>
         </el-radio-group>
       </el-form-item>
@@ -18,6 +18,7 @@
         <el-select v-model="form.pid" placeholder="父节点" class="w-200" disabled>
           <el-option v-for="item in options" :label="item.title" :value="item.id"></el-option>
         </el-select>
+		<span style="color:gray">（注意：若 <b><u>父节点</u></b> 的类型是 “模块”，则本 <b><u>节点类型</u></b> 输出时自动降级为 “操作”）</span>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="edit('form')" :loading="isLoading">提交</el-button>
