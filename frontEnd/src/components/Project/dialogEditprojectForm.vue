@@ -7,13 +7,14 @@
           <el-form-item label="项目简介" label-width="120px" required>
             <el-input v-model="projectRow.description" auto-complete="off" type="textarea" autosize></el-input>
           </el-form-item>
-          <el-form-item label="开发者" label-width="120px" required>
-            <el-input v-model="projectRow.developer" auto-complete="off"></el-input>
+          <el-form-item label="需求人" label-width="120px" required>
+            <el-input v-model="projectRow.demander" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="完成时间" label-width="120px">
-            <el-col :span="11">
+            <el-col :span="24">
               <el-form-item prop="date1">
-                <el-date-picker type="datetime" placeholder="选择时间" v-model="projectRow.finishedtime"></el-date-picker>
+                <el-date-picker type="datetime" placeholder="选择时间" v-model="projectRow.finishedtime"  :picker-options="pickerOption"></el-date-picker>
+                <span>设置完成时间，即表示该项目已完成</span>
               </el-form-item>
             </el-col>
           </el-form-item>
@@ -32,12 +33,21 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
-      projectRow: {}
+      projectRow: {},
+      pickerOption: {
+        disabledDate (time) {
+          return time.getTime() > Date.now()
+        }
+      }
     }
   },
   props: ['evisible', 'projectCurrentRow'],
   methods: {
     editProject () {
+      // 如果设置了 finishedtime ，则 status 要设置为 1
+      if (this.projectRow.finishedtime) {
+        this.projectRow.status = 1
+      }
       // this.isLoading = !this.isLoading
       this.apiPut('/admin/projects/', this.projectRow.id, this.projectRow).then(res => {
         /*
@@ -58,12 +68,6 @@ export default {
           message: '修改"' + this.projectRow.projectname + '"成功！',
           type: 'success'
         })
-        /*
-        this.tableData[this.form.index].projectname = this.form.projectname
-        this.tableData[this.form.index].developer = this.form.developer
-        this.tableData[this.form.index].finishedtime = this.form.finishedtime
-        this.tableData[this.form.index].description = this.form.description
-        */
         this.dialogFormVisible = false
         this.$emit('update-form', this.projectRow)
       })

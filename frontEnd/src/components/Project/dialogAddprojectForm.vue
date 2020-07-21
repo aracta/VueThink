@@ -16,7 +16,7 @@
             <el-input v-model="form.demander" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="开发者" prop="developer" label-width="120px" required>
-            <el-input v-model="form.developer" auto-complete="off"></el-input>
+            <el-input v-model="form.developer" auto-complete="off" readonly></el-input>
           </el-form-item>
           <el-form-item label="创建时间" prop="createtime" label-width="120px" required>
             <el-date-picker type="datetime" placeholder="选择时间" v-model="form.createtime"></el-date-picker>
@@ -46,7 +46,7 @@ export default {
         website: [],
         description: '',
         demander: '',
-        developer: '',
+        developer: Lockr.get('userInfo').realname,
         createtime: new Date(),
         deadline: ''
       },
@@ -88,7 +88,6 @@ export default {
   },
   methods: {
     submitForm (formName) {
-      console.log(this.form)
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let project = { ...this.form }

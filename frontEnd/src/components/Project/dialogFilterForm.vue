@@ -4,6 +4,12 @@
         <el-form-item label="项目名称：" prop="param_name">
           <el-input v-model="formInline.param_name" placeholder="项目名称" icon="close" :on-icon-click="clearParamName"></el-input>
         </el-form-item>
+        <el-form-item label="目标网站：" prop="param_website">
+          <el-select v-model="formInline.param_website" placeholder="目标网站" style="width:140px">
+            <el-option label="目标网站" value=""></el-option>
+            <el-option v-for="website in websites" :label="website" :value="website"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="需求人：" prop="param_demander">
           <el-select v-model="formInline.param_demander" placeholder="需求人" style="width:100px">
             <el-option label="需求人" value=""></el-option>
@@ -48,6 +54,7 @@ export default {
       },
       formInline: {
         param_name: '', // 项目名称
+        param_website: '', // 目标网站
         param_demander: '', // 需求人
         param_develop: '', // 开发者
         param_createmonth: new Date(), // 创建时间
@@ -66,14 +73,16 @@ export default {
       }
     }
   },
-  props: ['demanders', 'developers'],
+  props: ['websites', 'demanders', 'developers'],
   methods: {
     clearParamName (ev) {
       this.formInline.param_name = ''
     },
     projectsFilter () {
-      console.log(this.formInline)
       this.$emit('projectsFilter', this.formInline)
+    },
+    showProjectForm () {
+      this.$emit('showProjectForm')
     }
   }
 }

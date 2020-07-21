@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%;">
-    <dialog-filter-form :demanders="demanders" :developers="developers" @projectsFilter="projectsFilter"></dialog-filter-form>
+    <dialog-filter-form :websites="websites" :demanders="demanders" :developers="developers" @projectsFilter="projectsFilter" @showProjectForm="showProjectForm"></dialog-filter-form>
     <el-card style="margin-top: 20px;">
       <el-table
         :data="pageTableData()"
@@ -8,12 +8,15 @@
         <el-table-column label="项目名称">
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
-              <p>项目简介: {{ scope.row.description }}</p>
+              <p><b>项目简介:</b><div v-for="ds in scope.row.description.split('\n')">{{ ds }}</div></p>
               <span slot="reference" class="name-wrapper">{{ scope.row.projectname }}</span>
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column label="目标网站" width="120" align="center" prop="website">
+        <el-table-column label="目标网站" width="140" align="center" prop="website" :filters="website_fitlers" :filter-method="filterWebsite">
+          <template scope="scope">
+            <div v-for="site in scope.row.website">{{ site }}</div>
+          </template>
         </el-table-column>
         <el-table-column label="需求人" width="120" align="center" prop="demander" :filters="demander_fitlers" :filter-method="filterDemander">
         </el-table-column>
@@ -83,9 +86,9 @@
         :total="pageTotal">
       </el-pagination>
       <dialog-addproject-form :avisible="avisible" @update-form="addProject" @cancel-form="cancelAddprojectForm" ></dialog-addProject-form>
-      <dialog-editproject-form :project-current-row="projectCurrentRow" :evisible="evisible" @cancel-form="cancelEditprojectForm" @update-form="editProject"></dialog-editproject-form>
-      <dialog-difficulty-form :project-current-row="projectCurrentRow" :dvisible="dvisible" @cancel-form="cancelDifficultyForm" @update-form="updateDifficultyForm"></dialog-difficulty-form>
-      <dialog-record-form :project-detail="projectCurrentRow" :rvisible="rvisible" @cancel-form="cancelRcdForm" @update-form="updateRcdForm"></dialog-record-form>
+      <dialog-editproject-form v-if="projectCurrentRow" :project-current-row="projectCurrentRow" :evisible="evisible" @cancel-form="cancelEditprojectForm" @update-form="editProject"></dialog-editproject-form>
+      <dialog-difficulty-form v-if="projectCurrentRow" :project-current-row="projectCurrentRow" :dvisible="dvisible" @cancel-form="cancelDifficultyForm" @update-form="updateDifficultyForm"></dialog-difficulty-form>
+      <dialog-record-form v-if="projectCurrentRow" :project-detail="projectCurrentRow" :rvisible="rvisible" @cancel-form="cancelRcdForm" @update-form="updateRcdForm"></dialog-record-form>
     </el-card>
   </div>
 </template>
@@ -132,6 +135,24 @@ export default {
       })
       return this.toFixed(monthTotal)
     },
+    websites: function() {
+      let websites = {}
+      for (let i = 0, len = this.originTableData.length; i < len; i++) {
+        if (this.originTableData[i].website) {
+          this.originTableData[i].website.forEach((wb, index) => {
+            websites[wb] = wb
+          })
+        }
+      }
+      return websites
+    },
+    website_fitlers: function() {
+      let website_fitlers = []
+      for (let i in this.websites) {
+        website_fitlers.push({ text: i, value: i })
+      }
+      return website_fitlers
+    },
     demanders: function() {
       let demanders = {}
       for (let i = 0, len = this.originTableData.length; i < len; i++) {
@@ -162,6 +183,9 @@ export default {
     }
   },
   methods: {
+    filterWebsite (value, row) {
+      return row.website.includes(value)
+    },
     filterDemander (value, row) {
       return row.demander == value
     },
@@ -181,7 +205,7 @@ export default {
     },
     projectsFilter (formInline) {
       // 月份不一致时，需要通过 API 重新获取数据
-      if (formInline.param_createmonth.getMonth() !== this.createMonth.getMonth()) {
+      if (formInline.param_createmonth && formInline.param_createmonth.getMonth() !== this.createMonth.getMonth()) {
         this.createMonth = formInline.param_createmonth
         this.fetchData()
       }
@@ -204,6 +228,10 @@ export default {
           if (i == p_arr.length) {
             return false
           }
+        }
+        // 目标网站
+        if (formInline.param_website && !row.website.includes(formInline.param_website)) {
+          return false
         }
         // 需求人
         if (formInline.param_demander && row.demander != formInline.param_demander) {
@@ -269,6 +297,12 @@ export default {
                 'itemsTotal': ''
               }
             }
+            if (row.website) {
+              row.website = row.website.split(',')
+            }
+            // if (row.description) {
+            //   row.description = row.description.split('\n')
+            // }
             row.index = index
           })
         }
