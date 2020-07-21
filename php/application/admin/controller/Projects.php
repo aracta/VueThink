@@ -38,13 +38,17 @@ class Projects extends ApiCommon
         if (!$data) {
             return resultArray(['error' => $ProjectModel->getError()]);
         }
-        return resultArray(['data' => $data]);
+        return resultArray(['data' => $data]); // 7ckf “添加成功”，改为 返回添加成功的 id
     }
 
     public function update()
     {
         $ProjectModel = model('Project');
         $param = $this->param;
+		//如果设置了 finishedtime，则 status 要设置为 1
+		if ($param['finishedtime']) {
+			$param['status'] = 1;
+		}
         $data = $ProjectModel->updateDataById($param, $param['id']);
         if (!$data) {
             return resultArray(['error' => $ProjectModel->getError()]);

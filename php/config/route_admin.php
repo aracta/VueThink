@@ -59,7 +59,7 @@ return [
 	'admin/posts/deletes' => ['admin/posts/deletes', ['method' => 'POST']],
 	// 【部门】批量启用/禁用
 	'admin/posts/enables' => ['admin/posts/enables', ['method' => 'POST']],
-	// 【项目】批量启用/禁用
+	// 【项目】按月份查询
 	'admin/projects/month' => ['admin/projects/index', ['method' => 'POST']],
 	
 	// MISS路由

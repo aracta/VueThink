@@ -72,6 +72,17 @@ class Project extends Common
 			$end_time = date('Y-m-d H:i:s', strtotime($end_time)-1); //下个月1日凌晨零点零分零秒的前一秒
 			$where['createtime'] = ['between', [$begin_time, $end_time]];
 		}
+		// 如果是普通会员组，则只返回自己的项目
+		$user = $GLOBALS['userInfo'];
+		/*
+		$data = model('User')->getDataById($user['id']);
+		$groups = $data['groups'];
+		return $data;
+		*/
+		// 暂定非管理员都只能看自己的项目
+		if ($user['id'] != 1) {
+			$where['developer'] = $user['realname'];
+		}
 		$data = $this->where($where)->select();
 		foreach($data as &$row){
 			// return $this->dfcltrcd()->where(['project_id'=>$row['id']])->find();
