@@ -13,33 +13,23 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column label="目标网站" width="140" align="center" prop="website" :filters="website_fitlers" :filter-method="filterWebsite">
+        <el-table-column label="目标网站" width="150" align="center" prop="website" :filters="website_fitlers" :filter-method="filterWebsite">
           <template scope="scope">
             <div v-for="site in scope.row.website">{{ site }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="需求人" width="120" align="center" prop="demander" :filters="demander_fitlers" :filter-method="filterDemander">
+        <el-table-column label="需求人" width="100" align="center" prop="demander" :filters="demander_fitlers" :filter-method="filterDemander" sortable>
         </el-table-column>
-        <el-table-column label="开发者" width="120" align="center" prop="developer" :filters="developer_fitlers" :filter-method="filterDeveloper">
+        <el-table-column label="开发者" width="100" align="center" prop="developer" :filters="developer_fitlers" :filter-method="filterDeveloper" sortable>
         </el-table-column>
-        <el-table-column label="创建时间" align="center" width="200">
-          <template slot-scope="scope">
-            <i class="el-icon-time"></i>
-            <span style="margin-left: 10px">{{ scope.row.createtime }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="截止时间" align="center" width="200">
-          <template slot-scope="scope">
-            <i class="el-icon-time"></i>
-            <span style="margin-left: 10px">{{ scope.row.deadline }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="status" label="状态" width="90" align="center" :filters="[{text:'未完成',value:0},{text:'已完成',value:1}]" :filter-method="filterStatus">
+        <el-table-column label="创建时间" align="center" width="180" icon="time" prop="createtime" sortable></el-table-column>
+        <el-table-column label="截止时间" align="center" width="180" icon="time" prop="deadline" sortable></el-table-column>
+        <el-table-column prop="status" label="状态" width="90" align="center" :filters="[{text:'未完成',value:0},{text:'已完成',value:1}]" :filter-method="filterStatus" sortable>
           <template slot-scope="scope">
             <el-tag size="medium" :type="scope.row.status==1?'success':'gray'">{{ status(scope.row.status) }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="难度评分" width="140" align="center">
+        <el-table-column label="难度评分" prop="projectDfcltrcd.techsTotal" width="140" align="center" sortable>
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -47,14 +37,17 @@
             </el-button>
           </template>
         </el-table-column>
-        <el-table-column label="项目得分" width="140" align="center">
+        <el-table-column label="项目得分" prop="prjtotal" width="140" align="center" sortable>
           <template slot-scope="scope">
             <el-button
-              v-if="scope.row.projectDfcltrcd.techsTotal"
+              v-if="scope.row.status && scope.row.projectDfcltrcd.techsTotal"
               size="mini"
               :title="scope.row.projectRcd.itemsTotal"
               @click="handleRcd(scope.$index, scope.row)">项目得分 {{ scope.row.prjtotal }}
             </el-button>
+			<el-tooltip v-else content="难度评分且项目完成后，方可评分" effect="light" placement="top" class="c-light-gray">
+				<el-icon name="information"></el-icon>
+			</el-tooltip>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="120">
@@ -85,8 +78,8 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="pageTotal">
       </el-pagination>
-      <dialog-addproject-form :avisible="avisible" @update-form="addProject" @cancel-form="cancelAddprojectForm" ></dialog-addProject-form>
-      <dialog-editproject-form v-if="projectCurrentRow" :project-current-row="projectCurrentRow" :evisible="evisible" @cancel-form="cancelEditprojectForm" @update-form="editProject"></dialog-editproject-form>
+      <dialog-addproject-form :avisible="avisible" :demanders="demanders" @update-form="addProject" @cancel-form="cancelAddprojectForm" ></dialog-addProject-form>
+      <dialog-editproject-form v-if="projectCurrentRow" :project-current-row="projectCurrentRow" :evisible="evisible" :demanders="demanders" @cancel-form="cancelEditprojectForm" @update-form="editProject"></dialog-editproject-form>
       <dialog-difficulty-form v-if="projectCurrentRow" :project-current-row="projectCurrentRow" :dvisible="dvisible" @cancel-form="cancelDifficultyForm" @update-form="updateDifficultyForm"></dialog-difficulty-form>
       <dialog-record-form v-if="projectCurrentRow" :project-detail="projectCurrentRow" :rvisible="rvisible" @cancel-form="cancelRcdForm" @update-form="updateRcdForm"></dialog-record-form>
     </el-card>

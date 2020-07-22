@@ -7,22 +7,22 @@
           <el-form-item label="目标网站" prop="website" label-width="120px" required>
             <el-select v-model="form.website" multiple placeholder="请选择目标网站">
               <el-option v-for="item in websites" :key="item" :label="item" :value="item"></el-option>
-            </el-select>
+            </el-select><span class="c-light-gray">(*一经创建不可再修改)</span>
           </el-form-item>
           <el-form-item label="项目简介" prop="description" label-width="120px" required>
             <el-input v-model="form.description" auto-complete="off" type="textarea"></el-input>
           </el-form-item>
           <el-form-item label="需求人" prop="demander" label-width="120px" required>
-            <el-input v-model="form.demander" auto-complete="off"></el-input>
+            <el-autocomplete v-model="form.demander" :fetch-suggestions="querySearch"></el-autocomplete>
           </el-form-item>
           <el-form-item label="开发者" prop="developer" label-width="120px" required>
             <el-input v-model="form.developer" auto-complete="off" readonly></el-input>
           </el-form-item>
           <el-form-item label="创建时间" prop="createtime" label-width="120px" required>
-            <el-date-picker type="datetime" placeholder="选择时间" v-model="form.createtime"></el-date-picker>
+            <el-date-picker type="datetime" placeholder="选择时间" v-model="form.createtime"></el-date-picker><span class="c-light-gray">(*一经创建不可再修改)</span>
           </el-form-item>
           <el-form-item label="截止时间" prop="deadline" label-width="120px" required>
-            <el-date-picker type="datetime" placeholder="选择时间" v-model="form.deadline"></el-date-picker>
+            <el-date-picker type="datetime" placeholder="选择时间" v-model="form.deadline"></el-date-picker><span class="c-light-gray">(*一经创建不可再修改)</span>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -82,11 +82,24 @@ export default {
       }
     }
   },
-  props: ['avisible'],
+  props: ['avisible', 'demanders'],
   created: function () {
     this.form_origin = { ...this.form }
   },
   methods: {
+    querySearch(queryString, callback) {
+      let results = []
+      for (let demander in this.demanders) {
+        if (queryString) {
+          if (demander.indexOf(queryString) === 0) {
+            results.push({ value: demander })
+          }
+        } else {
+          results.push({ value: demander })
+        }
+      }
+      callback(results)
+    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -100,6 +113,7 @@ export default {
               return
             }
             project.id = res.data // 7ckf 返回ID
+            project.website = project.website.split(',')
             this.$emit('update-form', project)
             this.form = { ...this.form_origin }
             this.$refs['form'].resetFields()

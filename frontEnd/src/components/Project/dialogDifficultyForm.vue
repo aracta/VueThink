@@ -10,6 +10,12 @@
             </el-checkbox-group>
             <div>技术栈得分小计：{{ techTotal }}</div>
           </el-form-item>
+          <el-form-item label="站点数量：" label-width="120px">
+            <el-checkbox-group v-model="websites">
+            <el-checkbox v-for="(value, key, index) in websites" :label="value" :title="value" disabled></el-checkbox>
+            <span>× {{ websites.length }} 倍</span>
+            </el-checkbox-group>
+          </el-form-item>
           <el-form-item label="业务类型：" prop="prjtype" label-width="120px">
             <el-radio-group v-model="projectDfcltrcd.prjtype">
             <el-radio v-for="(value, key, index) in prjtypes" :label="key" :title="value" style="padding:10px 0"></el-radio>
@@ -61,6 +67,7 @@ export default {
         'CDN': 10,
         'FTP': 10
       },
+      websites: [],
       prjtypes: {
         'EDM/签名档等非官网业务': 50,
         '单页面改版/翻新': 80,
@@ -84,7 +91,8 @@ export default {
         '紧急': 1.5
       },
       experiences: {
-        '重复': 0.6,
+        '重复性劳动': 0.6,
+        '参杂重复和创新': 1,
         '参考': 1.2,
         '全新': 1.5
       },
@@ -98,6 +106,7 @@ export default {
       projectDfcltrcd: {
         'id': 0,
         'techtypes': [],
+        'website': [],
         'prjtype': '',
         'scale': '',
         'urgency': '',
@@ -140,11 +149,9 @@ export default {
     },
     techsTotal: function () {
       let techsTotal = this.techTotal
-      /*
-      if(this.projectDfcltrcd.scale){
-        techsTotal = this.techTotal * this.scales[this.projectDfcltrcd.scale]
+      if (this.website) {
+        techsTotal = this.techTotal * this.website.length
       }
-      */
       if (this.projectDfcltrcd.prjtype) {
         techsTotal += this.prjtypes[this.projectDfcltrcd.prjtype]
       }
@@ -204,6 +211,7 @@ export default {
     projectCurrentRow: {
       handler(newVal, oldVal) {
         this.projectDfcltrcd = { ...newVal.projectDfcltrcd }
+        this.websites = newVal.website
       },
       deep: true
     }

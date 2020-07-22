@@ -1,5 +1,5 @@
 <template>
-      <el-dialog title="难度评分" :visible.sync="visible">
+      <el-dialog title="项目得分" :visible.sync="visible">
         <el-form :model="projectRcd" :rules="rules" ref="form">
           <el-form-item label="项目名称：" label-width="120px" required>
             <el-input v-model="projectDetail.projectname" auto-complete="off" :disabled="true"></el-input>
@@ -24,7 +24,7 @@
               <el-radio v-for="(value, key, index) in adjusts" :label="key" :title="value"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="主动创新：" prop="creative" label-width="120px">
+          <el-form-item label="改进贡献：" prop="creative" label-width="120px">
             <el-radio-group v-model="projectRcd.creative">
               <el-radio v-for="(value, key, index) in creatives" :label="key" :title="value"></el-radio>
             </el-radio-group>
