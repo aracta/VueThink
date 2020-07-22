@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       visible: false,
-      websites: ['biofavor.cn', 'chundebio.com', 'elabscience.cn', 'elabscience.com', 'procell.com.cn', 'sci-meds.com', 'unscience.cn', 'usciencecorp.com', 'm.biofavor.cn', 'm.elabscience.cn', 'm.elabscience.com', 'm.procell.com.cn', 'm.unscience.cn', 'm.usciencecorp.com'],
+      websites: ['biofavor.cn', 'm.biofavor.cn', 'chundebio.com', 'elabscience.cn', 'm.elabscience.cn', 'elabscience.com', 'm.elabscience.com', 'procell.com.cn', 'm.procell.com.cn', 'sci-meds.com', 'unscience.cn', 'm.unscience.cn', 'usciencecorp.com', 'm.usciencecorp.com'],
       form_origin: {},
       form: {
         projectname: '',
