@@ -12,8 +12,8 @@ var cssSourceMapProd = (env === 'production' && config.build.productionSourceMap
 var useCssSourceMap = cssSourceMapDev || cssSourceMapProd
 
 // define the different HOST between development and production environment
-var DEV_HOST = JSON.stringify('http://vuethink.test:80/')
-var PUB_HOST = JSON.stringify('http://vuethink.test:80/')
+var DEV_HOST = JSON.stringify('http://10.10.11.68:8001/')
+var PUB_HOST = JSON.stringify('http://prj.elabscience.cn:8001/')
 
 module.exports = {
   entry: {
