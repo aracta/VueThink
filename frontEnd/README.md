@@ -56,3 +56,5 @@ VueThink是一套基于Vue全家桶（Vue2.x + Vue-router2.x + Vuex）+ Thinkphp
 
 * 程序运行之前需搭建好Server端
   vueThink的后端搭建请参考这里（https://github.com/honraytech/VueThink/tree/master/php），此处不再多述。
+
+* Vue单页刷新404问题的解决参考：(https://router.vuejs.org/zh/guide/essentials/history-mode.html#后端配置例子)
