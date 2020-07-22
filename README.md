@@ -94,8 +94,9 @@ VueThink是基于MIT协议的开源框架，它完全免费。你可以免费下
 ```
 请参考[ThinPHP重写](https://www.kancloud.cn/manual/thinkphp5_1/353955)
 ```
-
-
+```
+请参考伪静态(https://blog.csdn.net/byc233518/article/details/91949345)
+```
 
 ### 前端搭建
 ```
