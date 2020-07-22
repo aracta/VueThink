@@ -25,6 +25,10 @@
 			prop="username">
 			</el-table-column>
 			<el-table-column
+			label="真实姓名"
+			prop="realname">
+			</el-table-column>
+			<el-table-column
 			prop="s_name"
 			label="所属组织架构"
 			width="200">
