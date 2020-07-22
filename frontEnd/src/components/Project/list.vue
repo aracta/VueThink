@@ -404,8 +404,8 @@ export default {
             this.$message.error(res.error)
             return
           }
-          this.originTableData.splice(index + (this.currentPage - 1) * this.pageSize, 1)
-          this.pageTotal = this.originTableData.length
+          this.tableData.splice(index + (this.currentPage - 1) * this.pageSize, 1)
+          this.pageTotal = this.tableData.length
           this.$message({
             message: '删除"' + row.projectname + '"成功！',
             type: 'success'
