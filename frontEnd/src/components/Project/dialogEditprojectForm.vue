@@ -135,6 +135,13 @@ export default {
           this.projectRow.finishedtime = ''
           this.projectRow.status = 0
         })
+      } else {
+        // 如果设置了 finishedtime ，则 status 要设置为 1
+        if (this.projectRow.finishedtime) {
+          this.projectRow.status = 1
+        } else {
+          this.projectRow.status = 0
+        }
       }
     },
     statusChange () {
