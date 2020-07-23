@@ -23,7 +23,18 @@
         <el-table-column label="开发者" width="100" align="center" prop="developer" :filters="developer_fitlers" :filter-method="filterDeveloper" sortable>
         </el-table-column>
         <el-table-column label="创建时间" align="center" width="180" icon="time" prop="createtime" sortable></el-table-column>
-        <el-table-column label="截止时间" align="center" width="180" icon="time" prop="deadline" sortable></el-table-column>
+        <el-table-column label="截止时间" align="center" width="180" icon="time" prop="deadline" sortable>
+          <template scope="scope">
+            <el-tooltip v-if="isDelayed(scope.row)" effect="light" placement="top" class="c-red">
+              <div slot="content">项目超时<span v-if="scope.row.finishedtime">完成，完成时间：{{ scope.row.finishedtime }}</span><span v-else>未完成</span></div>
+              <span class="c-red"><el-icon v-if="!scope.row.finishedtime" name="warning"></el-icon>{{ scope.row.deadline }}</span>
+            </el-tooltip>
+            <el-tooltip v-else-if="isNearDelayed(scope.row)" content="项目临近截止时间！" effect="light" placement="top" class="c-orange">
+              <span class="c-orange"><el-icon name="warning"></el-icon>{{ scope.row.deadline }}</span>
+            </el-tooltip>
+            <span v-else>{{ scope.row.deadline }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="status" label="状态" width="90" align="center" :filters="[{text:'未完成',value:0},{text:'已完成',value:1}]" :filter-method="filterStatus" sortable>
           <template slot-scope="scope">
             <el-tag size="medium" :type="scope.row.status==1?'success':'gray'">{{ status(scope.row.status) }}</el-tag>
@@ -45,9 +56,9 @@
               :title="scope.row.projectRcd.itemsTotal"
               @click="handleRcd(scope.$index, scope.row)">项目得分 {{ scope.row.prjtotal }}
             </el-button>
-			<el-tooltip v-else content="难度评分且项目完成后，方可评分" effect="light" placement="top" class="c-light-gray">
-				<el-icon name="information"></el-icon>
-			</el-tooltip>
+            <el-tooltip v-else content="难度评分且项目完成后，方可评分" effect="light" placement="top" class="c-light-gray">
+                <el-icon name="information"></el-icon>
+            </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="120">
@@ -187,6 +198,30 @@ export default {
     },
     filterStatus (value, row) {
       return row.status == value
+    },
+    isDelayed (row) {
+      // 是否延期/超时未完成 是，返回 true
+      let deadline = new Date(row.deadline)
+      let finishedtime = row.finishedtime ? new Date(row.finishedtime) : new Date()
+      if (deadline < finishedtime) {
+        return true
+      } else {
+        return false
+      }
+    },
+    isNearDelayed (row) {
+      if (row.finishedtime) {
+        return false
+      }
+      // 是否临近超时（24小时） 是，返回 true
+      let deadline = new Date(row.deadline)
+      let now = new Date()
+      let warn_time = 24 * 3600 * 1000
+      if (now - deadline < warn_time) {
+        return true
+      } else {
+        return false
+      }
     },
     status (status) {
       switch (status) {
@@ -430,4 +465,10 @@ export default {
 </script>
 
 <style scoped>
+.c-red {
+  color: red
+}
+.c-orange {
+  color: orange
+}
 </style>
