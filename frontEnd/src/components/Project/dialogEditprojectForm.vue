@@ -10,6 +10,9 @@
           <el-form-item label="需求人" prop="demander" label-width="120px" required>
             <el-autocomplete v-model="projectRow.demander" :fetch-suggestions="querySearch" @select="handleSelect"></el-autocomplete>
           </el-form-item>
+          <el-form-item label="创建时间" label-width="120px">
+            <el-input v-model="projectRow.createtime" auto-complete="off" readonly disabled></el-input>
+          </el-form-item>
           <el-form-item label="截止时间" label-width="120px">
             <el-input v-model="projectRow.deadline" auto-complete="off" readonly disabled></el-input>
           </el-form-item>
@@ -58,11 +61,14 @@ export default {
         ],
         finishedtime: [
           { validator: (rule, value, callback) => {
+            let createtime = new Date(this.projectRow.createtime)
             if (!value && this.projectRow.status) {
               callback(new Error('请填写完成时间'))
-            } else {
-              callback()
             }
+            if (value < createtime && this.projectRow.status) {
+              callback(new Error('完成时间 不得早于 创建时间'))
+            }
+            callback()
           }, trigger: 'change' }
         ]
       }
@@ -118,30 +124,34 @@ export default {
       })
     },
     finishedtimeChange () {
+      let createtime = new Date(this.projectRow.createtime)
       let deadline = new Date(this.projectRow.deadline)
       if (this.projectRow.finishedtime > deadline) {
         this.$confirm('完成时间 已经晚于 截止时间，确定该项目是“延期完成”吗？', '警告', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
+        })
+        /*
+        .then(() => {
           // 如果设置了 finishedtime ，则 status 要设置为 1
           if (this.projectRow.finishedtime) {
             this.projectRow.status = 1
           } else {
             this.projectRow.status = 0
           }
-        }).catch(() => {
+        })
+        */
+        .catch(() => {
           this.projectRow.finishedtime = ''
           this.projectRow.status = 0
         })
+      }
+      // 如果设置了 finishedtime ，则 status 要设置为 1
+      if (this.projectRow.finishedtime) {
+        this.projectRow.status = 1
       } else {
-        // 如果设置了 finishedtime ，则 status 要设置为 1
-        if (this.projectRow.finishedtime) {
-          this.projectRow.status = 1
-        } else {
-          this.projectRow.status = 0
-        }
+        this.projectRow.status = 0
       }
     },
     statusChange () {
