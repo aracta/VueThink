@@ -384,6 +384,7 @@ export default {
         'creative': '',
         'itemsTotal': ''
       }
+      project.index = this.tableData.length
       this.tableData.push(project)
       this.cancelAddprojectForm()
     },
@@ -413,6 +414,8 @@ export default {
         }
         this.cancelRcdForm()
       })
+      // 更新本月绩效得分
+      this.monthTotal()
     },
     cancelRcdForm() {
       this.rvisible = false
