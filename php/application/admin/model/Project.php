@@ -74,14 +74,24 @@ class Project extends Common
 		}
 		// 如果是普通会员组，则只返回自己的项目
 		$user = $GLOBALS['userInfo'];
-		/*
-		$data = model('User')->getDataById($user['id']);
-		$groups = $data['groups'];
-		return $data;
-		*/
-		// 暂定非管理员都只能看自己的项目
-		if ($user['id'] != 1) {
+		$user_data = model('User')->getDataById($user['id']);
+		$groups = $user_data['groups'];
+		foreach($groups as $group){
+			if ($group['id'] == 15) {
+				$is_developer_group = true;
+				break;
+			}
+			if ($group['id'] == 17) {
+				$is_demander_group = true;
+			}
+		}
+		// if ($user['id'] != 1) {
+		// 暂定“项目开发组”只能看自己开发的项目，“项目评分组”只能【查看属于自己需求的项目，或新增、删除项目，但不能难度评分】
+		// 暂定同一个用户不能同时隶属于“项目开发组”和“项目评分组”这两个组
+		if ($is_developer_group) {
 			$where['developer'] = $user['realname'];
+		} elseif ($is_demander_group) {
+			$where['demander'] = $user['realname'];
 		}
 		$data = $this->where($where)->select();
 		foreach($data as &$row){
