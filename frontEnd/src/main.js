@@ -7,7 +7,8 @@ import Cookies from 'js-cookie'
 import _ from 'lodash'
 import moment from 'moment'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
+// import 'element-ui/lib/theme-default/index.css' //v1.2.9
+import 'element-ui/lib/theme-chalk/index.css' //v2.13.2
 import routes from './routes'
 import VueRouter from 'vue-router'
 import store from './vuex/store'
@@ -17,6 +18,8 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import 'assets/css/global.css'
 import 'assets/css/base.css'
+import wlGantt from 'wl-gantt'
+import 'wl-gantt/lib/wl-gantt.css'
 
 axios.defaults.baseURL = HOST
 axios.defaults.timeout = 1000 * 15
@@ -44,6 +47,7 @@ router.afterEach(transition => {
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
+Vue.use(wlGantt) //甘特图
 
 window.router = router
 window.store = store

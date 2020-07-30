@@ -11,32 +11,35 @@
         @selection-change="selectItem">
             <el-table-column type="selection" :context="_self" width="50"></el-table-column>
             <el-table-column prop="title" label="标题"></el-table-column>
-            <el-table-column inline-template label="类型" width="200">
-                <el-tag type="gray">{{ menu_type(row.menu_type) }}</el-tag>
+            <el-table-column label="类型" width="200">
+				<template slot-scope="scope">
+					<el-tag type="gray">{{ menu_type(scope.row.menu_type) }}</el-tag>
+				</template>
             </el-table-column>
 			<el-table-column prop="module" label="模块(顶部导航)"></el-table-column>
+			<el-table-column prop="url" label="路径"></el-table-column>
             <el-table-column prop="p_title" label="上级菜单" width="150"></el-table-column>
-            <el-table-column inline-template label="状态" width="100">
-                <div>
-                    {{ row.status | status}}
-                </div>
+            <el-table-column label="状态" width="100">
+                <template slot-scope="scope">
+                    {{ scope.row.status | status}}
+                </template>
             </el-table-column>
-            <el-table-column label="操作" inline-template width="200">
-                <div>
+            <el-table-column label="操作" width="200">
+                <template slot-scope="scope">
                     <span>
-                        <router-link :to="{ name: 'menuEdit', params: { id: row.id }}" class="btn-link edit-btn">
+                        <router-link :to="{ name: 'menuEdit', params: { id: scope.row.id }}" class="btn-link edit-btn">
                         编辑
                         </router-link>
                     </span>
                     <span>
                         <el-button
-                        size="small"
+                        size="mini"
                         type="danger"
-                        @click="confirmDelete(row)">
+                        @click="confirmDelete(scope.row)">
                         删除
                         </el-button>
                     </span>
-                </div>
+                </template>
             </el-table-column>
         </el-table>
         <div class="pos-rel p-t-20">

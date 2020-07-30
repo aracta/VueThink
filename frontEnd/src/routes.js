@@ -24,6 +24,7 @@ import usersEdit from './components/Administrative/personnel/users/edit.vue'
 // import projectsList from './components/Project/projects/list.vue'
 import projectsList from './components/Project/list.vue'
 // const projectsList = () => import('./components/Project/list.vue') // 需配合webpack实现路由懒加载
+import projectsGantt from './components/Project/gantt.vue'
 
 /**
  * meta参数解析
@@ -108,6 +109,13 @@ const routes = [
     component: Home,
     children: [
       { path: 'projects/list', component: projectsList, name: 'projectsList', meta: { hideLeft: false, module: 'Project', menu: 'projects' }}
+    ]
+  },
+  {
+    path: '/home',
+    component: Home,
+    children: [
+      { path: 'projects/gantt', component: projectsGantt, name: 'projectsGantt', meta: { hideLeft: false, module: 'Project', menu: 'projects' }}
     ]
   }
 ]
