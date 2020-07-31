@@ -9,6 +9,9 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var env = config.build.env
 
 var webpackConfig = merge(baseWebpackConfig, {
+  //7ckf webpack 4+
+  // mode: env.NODE_ENV
+  // mode: 'production',
   module: {
     loaders: utils.styleLoaders({ sourceMap: config.build.productionSourceMap, extract: true })
   },
@@ -29,6 +32,10 @@ var webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env
     }),
+    // 7ckf https://cn.vuejs.org/v2/guide/deployment.html
+    // new webpack.DefinePlugin({
+        // 'process.env.NODE_ENV': JSON.stringify('production')
+    // }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
