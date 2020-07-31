@@ -43,7 +43,7 @@
   					</span>
   					<span>
   						<el-button
-  						size="small"
+  						size="mini"
   						type="danger"
   						@click="confirmDelete(scope.row)">
   						删除

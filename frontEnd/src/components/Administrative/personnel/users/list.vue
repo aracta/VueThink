@@ -8,7 +8,7 @@
 			</div>
 			<div class="fl w-200 m-l-30">
 				<el-input placeholder="请输入用户名" v-model="keywords">
-					<el-button slot="append" icon="search" @click="search()"></el-button>
+					<el-button slot="append" icon="el-icon-search" @click="search()"></el-button>
 				</el-input>
 			</div>
 		</div>
@@ -58,7 +58,7 @@
               </router-link>
             </span>
             <span>
-              <el-button size="small" type="danger" @click="confirmDelete(scope.row)">删除</el-button>
+              <el-button size="mini" type="danger" @click="confirmDelete(scope.row)">删除</el-button>
             </span>
           </div>
         </template>

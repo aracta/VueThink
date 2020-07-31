@@ -7,7 +7,7 @@
 			<el-form-item label="LOGO">
 				<el-upload
 				:action="uploadUrl"
-				type="drag"
+				drag
 				:thumbnail-mode="true"
 				:on-preview="viewPic"
 				:on-remove="handleRemove"

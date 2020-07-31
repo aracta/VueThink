@@ -25,7 +25,7 @@
             </el-col>
           </el-form-item>
           <el-form-item label="项目状态" prop="status" label-width="120px">
-            <el-switch v-model="projectRow.status" on-text="已完成" off-text="未完成" :on-value="1" :off-value="0" :width="80" @change="statusChange"></el-switch>
+            <el-switch v-model="projectRow.status" active-text="已完成" inactive-text="未完成" :active-value="1" :inactive-value="0" :width="80" @change="statusChange"></el-switch>
                 <span class="c-light-gray">(项目完成和难度评分后，方可项目评分)</span>
           </el-form-item>
         </el-form>
@@ -65,7 +65,7 @@ export default {
             if (!value && this.projectRow.status) {
               callback(new Error('请填写完成时间'))
             }
-            if (value < createtime && this.projectRow.status) {
+            if ((new Date(value)) < createtime && this.projectRow.status) {
               callback(new Error('完成时间 不得早于 创建时间'))
             }
             callback()
