@@ -1,10 +1,10 @@
 <template>
-  <div style="width: 100%;">
+  <div class="w-100">
     <dialog-filter-form :websites="websites" :demanders="demanders" :developers="developers" @projectsFilter="projectsFilter" @showProjectForm="showProjectForm"></dialog-filter-form>
-    <el-card style="margin-top: 20px;">
+    <el-card class="mt-20">
       <el-table
         :data="pageTableData()"
-        style="width: 100%">
+        class="w-100">
         <el-table-column label="项目名称">
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
@@ -22,12 +22,12 @@
         </el-table-column>
         <el-table-column label="开发者" width="100" align="center" prop="developer" :filters="developer_fitlers" :filter-method="filterDeveloper" sortable>
         </el-table-column>
-        <el-table-column label="创建时间" align="center" width="180" icon="time" prop="createtime" sortable></el-table-column>
-        <el-table-column label="截止时间" align="center" width="180" icon="time" prop="deadline" sortable>
+        <el-table-column label="创建时间" align="center" width="110" icon="time" prop="createtime" sortable></el-table-column>
+        <el-table-column label="截止时间" align="center" width="110" icon="time" prop="deadline" sortable>
           <template scope="scope">
             <el-tooltip v-if="isDelayed(scope.row)" effect="light" placement="top" class="c-red">
               <div slot="content">项目超时<span v-if="scope.row.finishedtime">完成，完成时间：{{ scope.row.finishedtime }}</span><span v-else>未完成</span></div>
-              <span class="c-red"><el-icon v-if="!scope.row.finishedtime" name="warning"></el-icon>{{ scope.row.deadline }}</span>
+              <span class="c-red">{{ scope.row.deadline }}<el-icon v-if="!scope.row.finishedtime" name="warning"></el-icon></span>
             </el-tooltip>
             <el-tooltip v-else-if="isNearDelayed(scope.row)" content="项目临近截止时间！" effect="light" placement="top" class="c-orange">
               <span class="c-orange"><el-icon name="warning"></el-icon>{{ scope.row.deadline }}</span>
@@ -61,13 +61,13 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="120">
+        <el-table-column label="操作" align="center" width="160">
           <template slot-scope="scope">
             <el-button
               size="mini"
               @click="handleEdit(scope.$index, scope.row)">编辑
             </el-button>
-            <el-button slot="reference" style="margin-left:10px"
+            <el-button slot="reference" class="ml-10"
               size="mini"
               type="danger"
               @click="handleDelete(scope.$index, scope.row)">删除
@@ -75,11 +75,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-row align="middle" style="text-align:right;padding:15px;padding-right:140px;border:1px solid #dfe6ec;border-top:0">
+      <el-row align="middle" id="monthTotal">
         <el-col :span="24">本月绩效得分总计：{{ monthTotal }} 分</el-col>
       </el-row>
       <el-pagination
-        style="margin-top:20px"
+        class="mt-20"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         background
@@ -235,6 +235,7 @@ export default {
       // 月份不一致时，需要通过 API 重新获取数据
       if (formInline.param_createmonth && formInline.param_createmonth.getMonth() !== this.createMonth.getMonth()) {
         this.createMonth = formInline.param_createmonth
+        // TODO: 这里存在一个异步下载延迟
         this.fetchData()
       }
       this.tableData = []
@@ -468,10 +469,22 @@ export default {
 </script>
 
 <style scoped>
+.w-100{
+  width: 100%!important
+}
+.mt-20{
+  margin-top: 20px;
+}
+.ml-10{
+  margin-left:10px
+}
 .c-red {
   color: red
 }
 .c-orange {
   color: orange
+}
+#monthTotal{
+  text-align:right;padding:15px;padding-right:140px;border:1px solid #dfe6ec;border-top:0
 }
 </style>
