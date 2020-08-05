@@ -233,7 +233,7 @@ export default {
     },
     projectsFilter (formInline) {
       // 月份不一致时，需要通过 API 重新获取数据
-      if (formInline.param_createmonth && formInline.param_createmonth.getMonth() !== this.createMonth.getMonth()) {
+      if (formInline.param_createmonth && (formInline.param_createmonth.getTime() !== this.createMonth.getTime())) {
         this.createMonth = formInline.param_createmonth
         // TODO: 这里存在一个异步下载延迟
         this.fetchData()
@@ -271,6 +271,7 @@ export default {
           return false
         }
         // 创建时间 判断是否属于该月份
+        /*
         if (formInline.param_createmonth) {
           let param_createmonth = formInline.param_createmonth.getMonth()
           let row_createmonth = new Date(row.createtime).getMonth()
@@ -278,6 +279,7 @@ export default {
             return false
           }
         }
+        */
         // 状态
         if (formInline.param_status !== '' && row.status != formInline.param_status) {
           return false
