@@ -36,7 +36,7 @@
         <el-form-item>
           <el-button type="primary" @click="projectsFilter()">查询</el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="!isgantt">
           <el-button type="primary" icon="plus" @click="showProjectForm()">新增项目</el-button>
         </el-form-item>
       </el-form>
@@ -49,7 +49,7 @@ export default {
     return {
       pickerOption: {
         disabledDate (time) {
-          return time.getTime() > Date.now() - 8.64e7 // true 表示该 time 被设为禁用
+          return time.getTime() > (Date.now() - 8.64e7) // true 表示该 time 被设为禁用
         }
       },
       formInline: {
@@ -73,7 +73,7 @@ export default {
       }
     }
   },
-  props: ['websites', 'demanders', 'developers'],
+  props: ['websites', 'demanders', 'developers', 'isgantt'],
   methods: {
     projectsFilter () {
       this.$emit('projectsFilter', this.formInline)
